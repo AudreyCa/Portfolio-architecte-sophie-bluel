@@ -132,17 +132,18 @@ li:hover {
 	padding-bottom: 30px;
 }
 
-.filtres_projets p {
+.filtres_projets button {
 	color : #1D6154;
-	font-weight: 900;
+	font-weight: 600;
 	font-size: 17px;
 	border: 1px solid #1D6154;
-	border-radius: 20px;
+	border-radius: 50px;
+	background-color: white;
 	padding: 10px 20px;
 	margin: 5px;
 }
 
-.filtres_projets p:hover {
+.filtres_projets button:hover {
 	color: white;
 	background-color: #1D6154;
 }
