@@ -9,19 +9,24 @@
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
 		rel="stylesheet">
 	<meta name="description" content="">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" >
 	<link rel="stylesheet" href="./assets/style.css">
 	<title>Sophie Bluel - Architecte d'intérieur</title>
 	<script src="./edit.js" defer></script>
 </head>
 
 <body>
+	<section class="edit_mode">
+		<i class="fa-sharp fa-regular fa-pen-to-square"></i>
+		<span>Mode édition</span>
+	</section>
 	<header>
 		<a href="./index.html"><h1>Sophie Bluel <span>Architecte d'intérieur</span></h1></a>
-		<nav>
+		<nav class="nav_entete">
 			<ul>
 				<li><a href="#portfolio">projets</a></li>
 				<li><a href="#contact">contact</a></li>
-				<li><a href="./logPage.html">login</a></li>
+				<li><a href="# ">logout</a></li>
 				<li><a href="#"><img src="./assets/icons/instagram.png" alt="Instagram"></a></li>
 			</ul>
 		</nav>
@@ -36,21 +41,20 @@
 				<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison
 					finale du chantier.</p>
 				<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les
-					couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du
+					couleurs dans le respect de l'esprit des lieux et le choix adapté des matériaux. Le suivi du
 					chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
 				<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG,
 					décorateur(trice)</p>
 			</article>
 		</section>
 		<section id="portfolio">
-			<h2>Mes Projets</h2>
-			<div class="filtres_projets">
-				<button class="boutonsFiltres" id="tous">Tous</button>
-				<button class="boutonsFiltres" id="objects">Objets</button>
-				<button class="boutonsFiltres" id="appartements">Appartements</button>
-				<button class="boutonsFiltres" id="hotels_restaurants">Hôtels & restaurants</button>
+			<div class="modif_projets">
+				<h2>Mes Projets</h2>
+				<div class="bloc_edit_projet">
+					<i class="fa-sharp fa-regular fa-pen-to-square"></i>
+					<span>modifier</span>
+				</div>
 			</div>
-			<!-- Affichage des images filtrées ici -->
 			<div class="gallery"></div>
 		</section>
 		<section id="contact">
