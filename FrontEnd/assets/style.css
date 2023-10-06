@@ -264,6 +264,11 @@ input[type="submit"]{
 	border-radius: 60px ;
 }
 
+.error_message{
+	padding: 20px;
+	color: #B1663C;
+}
+
 .forgetPassword{
 	text-align: center;
 	text-decoration: underline;

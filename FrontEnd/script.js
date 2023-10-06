@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(response => response.json())
     .then(data => {
         data.forEach(element => {
-            console.log(element);
+            // console.log(element);
             let projet = document.createElement('figure');
             projet.innerHTML =`<img src=${element.imageUrl} alt=${element.title}>
             <figcaption>${element.title}</figcaption>`;
@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 galerie.textContent = "";
                 data.forEach(element => {
-                    console.log(element.title + " " + element.imageUrl);
                     let projet = document.createElement('figure');
                     projet.innerHTML =`<img src=${element.imageUrl} alt=${element.title}>
                     <figcaption>${element.title}</figcaption>`;
