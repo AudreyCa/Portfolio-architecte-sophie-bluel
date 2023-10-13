@@ -9,19 +9,72 @@
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
 		rel="stylesheet">
 	<meta name="description" content="">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" >
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+		integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+		crossorigin="anonymous" referrerpolicy="no-referrer">
 	<link rel="stylesheet" href="./assets/style.css">
 	<title>Sophie Bluel - Architecte d'intérieur</title>
 	<script src="./edit.js" defer></script>
 </head>
 
 <body>
+
+	<!-- Modale pour modifier/supprimer la galerie -->
+	<div class="modal-container">
+		<div class="overlay">
+			<div class="modal" role="dialog" aria-labelledby="edit_galerie_photo">
+				<div class="alone_btn_close">
+					<i class="fa-solid fa-xmark modal-trigger"></i>
+				</div>
+				<h3 id="edit_galerie_photo">Galerie photo</h3>
+				<div id="all_gallery"></div>
+				<button id="add_picture"> Ajouter une photo</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modale pour ajouter une photo -->
+	<div class="modal-container-add">
+		<div class="overlay">
+			<div class="modal" role="dialog" aria-labelledby="add_galerie_photo">
+				<div class="buttons_action">
+					<i class="fa-solid fa-arrow-left"></i>
+					<i class="fa-solid fa-xmark modal-trigger-close"></i>
+				</div>
+				<h3 id="add_galerie_photo">Ajout photo</h3>
+				<div class="bloc_photo">
+					<!-- ci dessus : a switcher avec l'image à ajouter -->
+					<div class="disaperedForPicture">
+						<i class="fa-regular fa-image"></i>
+						<button class="add_photo">+ Ajouter photo</button>
+						<p class="conseil"> jpg, png : 4mo max</p>
+					</div>
+				</div>
+				<form action="#" method="post" id="formPhoto">
+					<div class="bloc_details_photo">
+						<!-- Changer le lien dans "action" ici -->
+						<label for="title">Titre</label>
+						<input type="text" name="title" id="title">
+						<label for="category">Catégorie</label>
+						<input type="email" name="category" id="category">
+					</div>
+					<div class="submit_photo">
+						<!-- Rendre ce bouton disabled et grisé si tous les champs ne sont pas remplis -->
+						<input type="submit" id="add_picture" class="modal-trigger-close" value="Valider">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
 	<section class="edit_mode">
 		<i class="fa-sharp fa-regular fa-pen-to-square"></i>
 		<span>Mode édition</span>
 	</section>
 	<header>
-		<a href="./index.html"><h1>Sophie Bluel <span>Architecte d'intérieur</span></h1></a>
+		<a href="./index.html">
+			<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+		</a>
 		<nav class="nav_entete">
 			<ul>
 				<li><a href="#portfolio">projets</a></li>
@@ -50,10 +103,10 @@
 		<section id="portfolio">
 			<div class="modif_projets">
 				<h2>Mes Projets</h2>
-				<div class="bloc_edit_projet">
+				<button class="modal-btn modal-trigger">
 					<i class="fa-sharp fa-regular fa-pen-to-square"></i>
 					<span>modifier</span>
-				</div>
+				</button>
 			</div>
 			<div class="gallery"></div>
 		</section>

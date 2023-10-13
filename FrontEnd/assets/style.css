@@ -59,7 +59,7 @@ html{
 }
 
 body {
-	font-family: 'Work Sans' ;
+	font-family: 'Work Sans';
 	font-size: 14px;
 	width: 100%;
 	height: 100%;
@@ -70,7 +70,7 @@ body {
 }
 
 .edit_mode{
-	width: 100vw;
+	width: calc(100% - 40px);
 	padding: 20px;
 	margin: 0;
 	display: flex;
@@ -205,10 +205,164 @@ li:hover, a:hover  {
 	align-items: center;
 }
 
-.bloc_edit_projet{
-	margin: 0 20px 28px;
+.modal-btn{
+	padding: 0 20px 25px;
+	font-size: 15px;
 	cursor: pointer;
+	border: none;
+	background: transparent; 
+}
 
+.modal-container, .modal-container-add{
+	visibility: hidden;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	height: 100vh;
+}
+
+.modal-container.active{
+	visibility: visible;
+}
+
+.modal-container-add.active{
+	visibility: visible;
+}
+
+.overlay{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: #33333375;
+	opacity: 0;
+}
+
+.modal-container.active .overlay{
+	opacity: 1;
+	transition: opacity .4s ease;
+}
+
+.modal-container-add.active .overlay{
+	opacity: 1;
+	transition: opacity .4s ease;
+}
+
+.modal{
+	width: 95%;
+	max-width: 600px;
+	min-width: 300px;
+	padding: 20px 30px;
+	background-color: #ffffff;
+	border-radius: 10px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	/* overflow-y: scroll; */
+}
+
+.alone_btn_close, .buttons_action {
+	width: 100%;
+	height: 40px;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.buttons_action {
+	justify-content: space-between;
+}
+
+.fa-xmark, .fa-arrow-left{
+	padding: 10px;
+	font-size: 18px;
+	cursor: pointer;
+}
+
+.modal h3{
+	text-align: center;
+	font-size: 30px;
+	padding: 10px 0 30px;
+}
+
+.bloc_photo, #formPhoto {
+	width: 80%;
+}
+.bloc_photo {
+	width: 80%;
+	height: 180px;
+	background-color: #e8f1f6;
+	border-radius: 5px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.disaperedForPicture{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.fa-regular.fa-image{
+	color: #cbd6dc;
+	font-size: 60px;
+	padding: 5px;
+}
+.add_photo{
+	background-color: #cbd6dc;
+	border: none;
+	border-radius: 50px;
+	padding: 10px 20px;
+	margin: 5px 0 10px;
+	color: #497893;
+	font-size: 15px;
+	font-weight: 500;
+	cursor: pointer;
+}
+.conseil {
+	font-size: 11px;
+
+}
+
+#all_gallery, .bloc_details_photo {
+	width: 100%;
+	border-bottom: 1px solid grey;
+}
+
+.gallery_img{
+	position: relative;
+}
+
+/* .trashbox{
+	width: 15px;
+	height: 20px;
+	background-color: rgba(0, 0, 0, 0.579);
+	position: absolute;
+	top: 5%;
+	right: 5%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+} */
+
+.fa-trash-can{
+	position: absolute;
+	top: 5%;
+	right: 5%;
+	width: 10px;
+	height: 15px;
+	background-color: rgba(0, 0, 0, 0.579);
+	padding: 5px;
+	border-radius: 2px;
+	color: white;
+	font-size: 12px;
+	cursor: pointer;
 }
 
 #portfolio h2 {
@@ -246,9 +400,17 @@ li:hover, a:hover  {
 	grid-row-gap: 20px;
 }
 
-.gallery img {
-	width: 100%;
+#all_gallery{
+	width: 90%;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	grid-column-gap: 10px;
+	grid-row-gap: 10px;
+	padding: 20px 0 40px;
+}
 
+.gallery img, #all_gallery img{
+	width: 100%;
 }
 
 #contact{
@@ -272,21 +434,21 @@ li:hover, a:hover  {
 #contact h2, #connexion h2{
 	margin-bottom: 20px;
 }
-#contact form, #connexion form {
+#contact form, #connexion form, .bloc_details_photo {
 	text-align: left;
 	margin-top: 30px;
 	display: flex;
 	flex-direction: column;
 }
 
-#contact input, #connexion input {
+#contact input, #connexion input, .bloc_details_photo input {
 	height: 50px;
 	padding: 0 15px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-#contact label, #connexion label {
+#contact label, #connexion label, .bloc_details_photo label {
 	margin: 2em 0 1em 0;
 }
 #contact textarea {
@@ -295,7 +457,12 @@ li:hover, a:hover  {
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-input[type="submit"]{
+.bloc_details_photo{
+	padding-bottom: 40px;
+	margin-top: 5px;
+}
+
+input[type="submit"], #add_picture {
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
@@ -307,9 +474,23 @@ input[type="submit"]{
 	cursor: pointer;
 }
 
-input[type="submit"]:hover{
+input[type="submit"]:hover, #add_picture:hover {
 	background-color: black;
+}
 
+.submit_photo{
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+#add_picture{
+	text-align: center;
+	padding: 1em 1.5em;
+	font-weight: normal;
+	font-size: 14px;
+	min-width: 250px;
+	border: none; 
 }
 
 .error_message{
