@@ -1,4 +1,6 @@
 window.addEventListener('load', function () {
+    let token = localStorage.getItem('token');
+    let body = this.document.querySelector("body");
     let galerie = document.querySelector(".gallery");
     let modalContainer = document.querySelector(".modal-container");
     let modalTriggers = document.querySelectorAll(".modal-trigger");
@@ -9,7 +11,14 @@ window.addEventListener('load', function () {
     let closeSecModale = document.querySelectorAll(".modal-trigger-close");
     let backToFirstModale = document.querySelector(".fa-arrow-left");
     let btnsDelete = document.querySelectorAll(".fa-trash-can");
-    
+    let logOut = document.getElementById("logout");
+
+    if (!token) {
+        body.innerHTML = '<h2 style="text-align:center; padding:50px;"> Vous n\'êtes pas autorisé à acceder à cette page <h2>';
+        setTimeout(function() {
+            window.location.href = '/'; // Remplacez 'autre_page.html' par le chemin de votre autre page
+        }, 5000);
+    }
 
     // Au chargement de la page, on affiche tous les projets :
     fetch('http://localhost:5678/api/works')
@@ -95,6 +104,11 @@ window.addEventListener('load', function () {
         }
     
     };
+
+    logOut.addEventListener('click', () => {
+        localStorage.removeItem('token');
+        window.location.href = '/';
+    });
 
 });
 
