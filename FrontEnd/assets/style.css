@@ -143,13 +143,6 @@ nav ul {
 	font-size: 1.2em;
 }
 
-/* .nav_entete ul li:hover {
-	padding: 0 10px;
-	font-size: 1.2em;
-	font-weight: 900;
-	color: black;
-} */
-
 .nav_entete ul li a {
 	color: black;
 }
@@ -164,7 +157,6 @@ nav ul {
 }
 
 li:hover, a:hover  {
-	/* color: #B1663C; */
 	font-weight: 900;
 	color: black;
 	cursor: pointer;
@@ -211,58 +203,56 @@ li:hover, a:hover  {
 	cursor: pointer;
 	border: none;
 	background: transparent; 
+	text-decoration: none;
+	color: black;
 }
 
-.modal-container, .modal-container-add{
+#modal-container, #modal-container-add{
 	visibility: hidden;
 	position: fixed;
 	top: 0;
-	width: 100%;
-	height: 100vh;
-}
-
-.modal-container.active{
-	visibility: visible;
-}
-
-.modal-container-add.active{
-	visibility: visible;
-}
-
-.overlay{
-	position: absolute;
+	left: 0;
 	width: 100%;
 	height: 100%;
 	background-color: #33333375;
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#modal-container.active{
+	visibility: visible;
+}
+
+#modal-container-add.active{
+	visibility: visible;
+}
+
+.modal-wrapper{
 	opacity: 0;
-}
-
-.modal-container.active .overlay{
-	opacity: 1;
-	transition: opacity .4s ease;
-}
-
-.modal-container-add.active .overlay{
-	opacity: 1;
-	transition: opacity .4s ease;
-}
-
-.modal{
-	width: 95%;
-	max-width: 600px;
-	min-width: 300px;
+	overflow: auto;
+	width: 500px;
+	max-width: calc(100vw - 20px);
+	height: 650px;
+	max-height: calc(100vh -20px);
 	padding: 20px 30px;
 	background-color: #ffffff;
 	border-radius: 10px;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	/* overflow-y: scroll; */
+}
+
+#modal-container.active .modal-wrapper, #modal-container-add.active .modal-wrapper{
+	opacity: 1;
+	transition: opacity .4s ease;
+}
+
+.modal-wrapper a {
+	text-decoration: none;
+	color:black
 }
 
 .alone_btn_close, .buttons_action {
@@ -282,7 +272,7 @@ li:hover, a:hover  {
 	cursor: pointer;
 }
 
-.modal h3{
+.modal-wrapper h3{
 	text-align: center;
 	font-size: 30px;
 	padding: 10px 0 30px;
@@ -308,6 +298,12 @@ li:hover, a:hover  {
 	align-items: center;
 }
 
+.img_preview{
+	display: none;
+	justify-content: center;
+	align-items: center;
+}
+
 .fa-regular.fa-image{
 	color: #cbd6dc;
 	font-size: 60px;
@@ -326,7 +322,6 @@ li:hover, a:hover  {
 }
 .conseil {
 	font-size: 11px;
-
 }
 
 #all_gallery, .bloc_details_photo {
@@ -337,19 +332,6 @@ li:hover, a:hover  {
 .gallery_img{
 	position: relative;
 }
-
-/* .trashbox{
-	width: 15px;
-	height: 20px;
-	background-color: rgba(0, 0, 0, 0.579);
-	position: absolute;
-	top: 5%;
-	right: 5%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	cursor: pointer;
-} */
 
 .fa-trash-can{
 	position: absolute;
@@ -462,7 +444,7 @@ li:hover, a:hover  {
 	margin-top: 5px;
 }
 
-input[type="submit"], #add_picture, #btnSubmitLog {
+input[type="submit"], #add_picture, #add_picture2, #btnSubmitLog {
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
@@ -474,7 +456,11 @@ input[type="submit"], #add_picture, #btnSubmitLog {
 	cursor: pointer;
 }
 
-input[type="submit"]:hover, #add_picture:hover, #btnSubmitLog:hover {
+#add_picture2{
+	background-color: grey;
+}
+
+input[type="submit"]:hover, #add_picture:hover, #add_picture2:hover #btnSubmitLog:hover {
 	background-color: black;
 }
 
@@ -484,7 +470,7 @@ input[type="submit"]:hover, #add_picture:hover, #btnSubmitLog:hover {
 	justify-content: center;
 }
 
-#add_picture{
+#add_picture, #add_picture2{
 	text-align: center;
 	padding: 1em 1.5em;
 	font-weight: normal;

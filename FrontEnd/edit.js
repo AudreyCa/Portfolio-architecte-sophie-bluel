@@ -2,20 +2,28 @@ window.addEventListener('load', function () {
     let token = localStorage.getItem('token');
     let body = this.document.querySelector("body");
     let galerie = document.querySelector(".gallery");
-    let modalContainer = document.querySelector(".modal-container");
-    let modalTriggers = document.querySelectorAll(".modal-trigger");
+    let modalContainer = document.getElementById("modal-container");
+    let closeFirstModale = document.querySelectorAll(".modal-trigger");
     let btnModale = document.querySelector(".modal-btn");
     let allGalerie = document.getElementById("all_gallery");
-    let btnSecondModale = document.getElementById("add_picture");
-    let secondModale = document.querySelector(".modal-container-add");
+    let btnFirstModale = document.getElementById("add_picture");
+    let btnSecondModale = document.getElementById("add_picture2");
+    let secondModale = document.getElementById("modal-container-add");
     let closeSecModale = document.querySelectorAll(".modal-trigger-close");
     let backToFirstModale = document.querySelector(".fa-arrow-left");
-    let btnsDelete = document.querySelectorAll(".fa-trash-can");
     let logOut = document.getElementById("logout");
+    let btnAddPicture = this.document.querySelector(".add_photo");
+    let blocToChoosePic = document.querySelector(".disaperedForPicture");
+    let imgToShow = document.querySelector(".img_preview");
+    let titrePhotoToAdd = this.document.querySelector(".title_pic_Add");
+    let CategoryToAdd = this.document.querySelector(".category_pic_Add");
+    let fileInput;
+    let selectedImg;
+
 
     if (!token) {
         body.innerHTML = '<h2 style="text-align:center; padding:50px;"> Vous n\'êtes pas autorisé à acceder à cette page <h2>';
-        setTimeout(function() {
+        setTimeout(function () {
             window.location.href = '/'; // Remplacez 'autre_page.html' par le chemin de votre autre page
         }, 5000);
     }
@@ -24,7 +32,7 @@ window.addEventListener('load', function () {
     fetch('http://localhost:5678/api/works')
         .then(response => response.json())
         .then(data => {
-            galerie.textContent = "";
+            galerie.innerText = "";
             data.forEach(element => {
                 // console.log(element);
                 let projet = document.createElement('figure');
@@ -39,39 +47,38 @@ window.addEventListener('load', function () {
         fetch('http://localhost:5678/api/works')
             .then(response => response.json())
             .then(data => {
-                allGalerie.textContent = "";
+                galerie.innerText = "";
                 data.forEach(element => {
                     let modaleProjet = document.createElement('figure');
-                    // let image = document.querySelector(".image");
                     modaleProjet.innerHTML =
-                    `<div class="gallery_img">
+                        `<div class="gallery_img">
                     <img src=${element.imageUrl} alt=${element.title} class="image">
                     <i class="fa-solid fa-trash-can" data-id=${element.id}></i>
                     </div>`
                     allGalerie.appendChild(modaleProjet);
-                    // console.log(modaleProjet);
                     let btnDelete = modaleProjet.querySelector(".fa-trash-can");
-                    console.log(btnDelete);
-                    btnDelete.addEventListener('click', deletePicture);
-
+                    let idToDelete = btnDelete.getAttribute("data-id");
+                    btnDelete.addEventListener('click', function () {
+                        deletePicture(idToDelete);
+                    })
                 });
-                // let btnDelete = document.querySelector(".fa-trash-can");
-                // console.log(btnDelete);
+
             })
-        // POur vérifier ce qu'on recois de btnsDelete
-        // console.log(btnsDelete);
     });
 
-    modalTriggers.forEach(trigger =>
-        trigger.addEventListener('click', toggleModal)
+    // Gestion des modales
+    closeFirstModale.forEach(trigger =>
+        trigger.addEventListener('click', closeModale1)
     );
-    function toggleModal() {
+    function closeModale1(e) {
         modalContainer.classList.toggle("active");
+        updateAttributeHidden();
     }
 
-    btnSecondModale.addEventListener('click', function () {
+    btnFirstModale.addEventListener('click', function () {
         modalContainer.classList.toggle("active");
         secondModale.classList.toggle("active");
+        updateAttributeHidden();
     });
 
     closeSecModale.forEach(trigger =>
@@ -79,32 +86,148 @@ window.addEventListener('load', function () {
     );
     function closeModale2() {
         secondModale.classList.toggle("active");
+        updateAttributeHidden();
     }
 
     backToFirstModale.addEventListener('click', function () {
         modalContainer.classList.toggle("active");
         secondModale.classList.toggle("active");
+        updateAttributeHidden();
     });
 
-    function deletePicture() {
-        // let idPicture = this.dataset.id;
-        // alert(`L'ID de l'élément est : ${idPicture}`);
+    function updateAttributeHidden() {
+        let isModalActive = modalContainer.classList.contains("active");
+        modalContainer.setAttribute('aria-hidden', !isModalActive);
+        secondModale.setAttribute('aria-hidden', isModalActive);
+    }
+
+    // Fonction qui permet de delete les photos que l'on choisi.
+    async function deletePicture(id) {
+        console.log(id);
+
         try {
-            let idPicture = this.dataset.id;
-            let confirmation = window.confirm("Êtes-vous sûr de vouloir supprimer cette image ?");
-    
-            if (confirmation) {
-                // Faire ici la suppression de l'image avec l'ID
-                console.log(`L'utilisateur a confirmé la suppression de l'image avec l'ID : ${idPicture}`);
-            } else {
-                console.log("L'utilisateur a annulé la suppression.");
-            }
+
+            await fetch(`http://localhost:5678/api/works/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` // Inclure le token d'authentification
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        alert('La requête n\'a pas abouti');
+                    }
+                })
+                .then(data => {
+                    console.log(data);
+                    console.log(`Image avec l'ID ${id} supprimée avec succès.`);
+                    updateGallery();
+                })
         } catch (error) {
             console.error('Une erreur s\'est produite:', error);
         }
-    
     };
 
+    async function updateGallery() {
+        if (allGalerie.hasChild()) {
+            galerie.removeChild();
+        }
+        await fetch('http://localhost:5678/api/works')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(element => {
+                    let modaleProjet = document.createElement('figure');
+                    modaleProjet.innerHTML =
+                        `<div class="gallery_img">
+                    <img src=${element.imageUrl} alt=${element.title} class="image">
+                    <i class="fa-solid fa-trash-can" data-id=${element.id}></i>
+                    </div>`
+                    allGalerie.appendChild(modaleProjet);
+                    let btnDelete = modaleProjet.querySelector(".fa-trash-can");
+                    let idToDelete = btnDelete.getAttribute("data-id");
+                    btnDelete.addEventListener('click', function () {
+                        deletePicture(idToDelete);
+                    })
+                });
+
+            })
+    }
+
+
+    // Fonction pour ajouter une photo :
+    btnAddPicture.addEventListener('click', function chooseFileToUpload() {
+
+        fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/jpeg, image/png';
+
+        fileInput.addEventListener('change', function () {
+            selectedImg = this.files[0];
+            if (selectedImg) {
+
+                console.log(selectedImg);
+                const reader = new FileReader();
+
+                reader.onload = function (event) {
+                    console.log(event.target);
+
+                    blocToChoosePic.style.display = "none";
+                    imgToShow.style.display = "flex";
+                    let previewImg = document.createElement('img');
+                    previewImg.src = event.target.result,
+                        previewImg.alt = selectedImg.name;
+                    previewImg.style.maxHeight = "180px";
+                    imgToShow.appendChild(previewImg);
+
+                }
+                reader.readAsDataURL(selectedImg);
+            }
+        });
+
+        fileInput.click();
+
+    });
+
+    titrePhotoToAdd.addEventListener('input', updateInputColor);
+    CategoryToAdd.addEventListener('input', updateInputColor);
+    function updateInputColor() {
+        if (titrePhotoToAdd.value !== "" && CategoryToAdd.value !== "") {
+            btnSecondModale.style.backgroundColor = "#1D6154";
+            btnSecondModale.removeAttribute("disabled");
+        }
+    }
+
+    btnSecondModale.addEventListener('click', function (e) {
+        // body
+        e.preventDefault();
+        let title = document.getElementById('title').value;
+        let category = document.getElementById('category').value;
+        console.log(selectedImg);
+
+        let formPicData = new FormData();
+        formPicData.append('image', selectedImg);
+        formPicData.append('title', title);
+        formPicData.append('category', category);
+
+        fetch('http://localhost:5678/api/works', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+        body: formPicData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+    });
+    });
+
+    
+    // Pour se déconnecter
     logOut.addEventListener('click', () => {
         localStorage.removeItem('token');
         window.location.href = '/';
