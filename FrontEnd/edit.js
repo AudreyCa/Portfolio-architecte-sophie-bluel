@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('load', function () {
     let galerie = document.querySelector(".gallery");
     let modalContainer = document.querySelector(".modal-container");
     let modalTriggers = document.querySelectorAll(".modal-trigger");

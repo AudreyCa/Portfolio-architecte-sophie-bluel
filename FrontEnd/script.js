@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('load',  () => {
     const tous = document.getElementById("tous");
     const objects = document.getElementById("objects");
     const appartements = document.getElementById("appartements");
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
     hotelsRestos.addEventListener('click', getHotelsResto);
 
     function getAllproject() {
-        galerie.textContent = "";
+        galerie.innerText = "";
         for (i = 0; i < allProjects.length; i++) {
             projets = document.createElement('figure');
             projets.innerHTML = `<img src=${allProjects[i].imageUrl} alt=${allProjects[i].title}>
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function getObjects() {
-        galerie.textContent = "";
+        galerie.innerText = "";
         for (i = 0; i < allProjects.length; i++) {
             if (allProjects[i].categoryId == 1) {
                 projets = document.createElement('figure');
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     function getAppart() {
-        galerie.textContent = "";
+        galerie.innerText = "";
         for (i = 0; i < allProjects.length; i++) {
             if (allProjects[i].categoryId == 2) {
                 projets = document.createElement('figure');
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     function getHotelsResto() {
-        galerie.textContent = "";
+        galerie.innerText = "";
         for (i = 0; i < allProjects.length; i++) {
             if (allProjects[i].categoryId == 3) {
                 projets = document.createElement('figure');

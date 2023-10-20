@@ -441,7 +441,7 @@ li:hover, a:hover  {
 	flex-direction: column;
 }
 
-#contact input, #connexion input, .bloc_details_photo input {
+#contact input, #connexion input, #btnSubmitLog, .bloc_details_photo input {
 	height: 50px;
 	padding: 0 15px;
 	font-size: 1.2em;
@@ -462,7 +462,7 @@ li:hover, a:hover  {
 	margin-top: 5px;
 }
 
-input[type="submit"], #add_picture {
+input[type="submit"], #add_picture, #btnSubmitLog {
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
@@ -474,7 +474,7 @@ input[type="submit"], #add_picture {
 	cursor: pointer;
 }
 
-input[type="submit"]:hover, #add_picture:hover {
+input[type="submit"]:hover, #add_picture:hover, #btnSubmitLog:hover {
 	background-color: black;
 }
 
