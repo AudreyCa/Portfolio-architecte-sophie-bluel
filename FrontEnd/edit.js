@@ -1,6 +1,6 @@
 window.addEventListener('load', function () {
     let token = localStorage.getItem('token');
-    let body = this.document.querySelector("body");
+    let body = document.querySelector("body");
     let galerie = document.querySelector(".gallery");
     let modalContainer = document.getElementById("modal-container");
     let closeFirstModale = document.querySelectorAll(".modal-trigger");
@@ -12,13 +12,13 @@ window.addEventListener('load', function () {
     let closeSecModale = document.querySelectorAll(".modal-trigger-close");
     let backToFirstModale = document.querySelector(".fa-arrow-left");
     let logOut = document.getElementById("logout");
-    let btnAddPicture = this.document.querySelector(".add_photo");
+    let btnAddPicture = document.querySelector(".add_photo");
     let blocToChoosePic = document.querySelector(".disaperedForPicture");
     let imgToShow = document.querySelector(".img_preview");
-    let titrePhotoToAdd = this.document.querySelector(".title_pic_Add");
-    let CategoryToAdd = this.document.querySelector(".category_pic_Add");
-    let fileInput;
-    let selectedImg;
+    let titrePhotoToAdd = document.querySelector(".title_pic_Add");
+    let CategoryToAdd = document.querySelector(".category_pic_Add");
+    let fileInput = document.getElementById("inputFileAdd");
+    let selectedImg, previewImg;
 
 
     if (!token) {
@@ -29,32 +29,37 @@ window.addEventListener('load', function () {
     }
 
     // Au chargement de la page, on affiche tous les projets :
-    fetch('http://localhost:5678/api/works')
-        .then(response => response.json())
-        .then(data => {
-            galerie.innerText = "";
-            data.forEach(element => {
-                // console.log(element);
-                let projet = document.createElement('figure');
-                projet.innerHTML = `<img src=${element.imageUrl} alt=${element.title}>
+    initGallery();
+
+    function initGallery() {
+        fetch('http://localhost:5678/api/works')
+            .then(response => response.json())
+            .then(data => {
+                galerie.innerText = "";
+                data.forEach(element => {
+                    // console.log(element);
+                    let projet = document.createElement('figure');
+                    projet.innerHTML = `<img src=${element.imageUrl} alt=${element.title}>
                 <figcaption>${element.title}</figcaption>`;
-                galerie.appendChild(projet);
+                    galerie.appendChild(projet);
+                });
             });
-        });
+    }
+
 
     // ------- A l'ouverture de la modale, on affiche toutes les images ----------
     btnModale.addEventListener("click", function () {
         fetch('http://localhost:5678/api/works')
             .then(response => response.json())
             .then(data => {
-                galerie.innerText = "";
+                allGalerie.innerText = "";
                 data.forEach(element => {
                     let modaleProjet = document.createElement('figure');
                     modaleProjet.innerHTML =
                         `<div class="gallery_img">
-                    <img src=${element.imageUrl} alt=${element.title} class="image">
-                    <i class="fa-solid fa-trash-can" data-id=${element.id}></i>
-                    </div>`
+                            <img src=${element.imageUrl} alt=${element.title} class="image">
+                            <i class="fa-solid fa-trash-can" data-id=${element.id}></i>
+                        </div>`
                     allGalerie.appendChild(modaleProjet);
                     let btnDelete = modaleProjet.querySelector(".fa-trash-can");
                     let idToDelete = btnDelete.getAttribute("data-id");
@@ -81,9 +86,18 @@ window.addEventListener('load', function () {
         updateAttributeHidden();
     });
 
-    closeSecModale.forEach(trigger =>
+    closeSecModale.forEach(trigger => {
         trigger.addEventListener('click', closeModale2)
+        titrePhotoToAdd.value = "";
+        CategoryToAdd.value = "";
+        blocToChoosePic.style.display = "flex";
+        imgToShow.style.display = "none";
+        if(fileInput){
+            fileInput.remove();
+        }
+    }
     );
+
     function closeModale2() {
         secondModale.classList.toggle("active");
         updateAttributeHidden();
@@ -101,17 +115,17 @@ window.addEventListener('load', function () {
         secondModale.setAttribute('aria-hidden', isModalActive);
     }
 
-    // Fonction qui permet de delete les photos que l'on choisi.
-    async function deletePicture(id) {
-        console.log(id);
-
+    // Fonction qui permet de supprimer les photos que l'on choisi (en fonction de leur id)
+    function deletePicture(id) {
+        // console.log(id);
+        // e.preventDefault();
         try {
 
-            await fetch(`http://localhost:5678/api/works/${id}`, {
+            fetch(`http://localhost:5678/api/works/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // Inclure le token d'authentification
+                    'Authorization': `Bearer ${token}` // Inclus le token d'authentification pour être authorisé à supprimer les datas
                 }
             })
                 .then(response => {
@@ -122,6 +136,7 @@ window.addEventListener('load', function () {
                 .then(data => {
                     console.log(data);
                     console.log(`Image avec l'ID ${id} supprimée avec succès.`);
+                    //ici
                     updateGallery();
                 })
         } catch (error) {
@@ -129,63 +144,39 @@ window.addEventListener('load', function () {
         }
     };
 
-    async function updateGallery() {
-        if (allGalerie.hasChild()) {
-            galerie.removeChild();
-        }
-        await fetch('http://localhost:5678/api/works')
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(element => {
-                    let modaleProjet = document.createElement('figure');
-                    modaleProjet.innerHTML =
-                        `<div class="gallery_img">
-                    <img src=${element.imageUrl} alt=${element.title} class="image">
-                    <i class="fa-solid fa-trash-can" data-id=${element.id}></i>
-                    </div>`
-                    allGalerie.appendChild(modaleProjet);
-                    let btnDelete = modaleProjet.querySelector(".fa-trash-can");
-                    let idToDelete = btnDelete.getAttribute("data-id");
-                    btnDelete.addEventListener('click', function () {
-                        deletePicture(idToDelete);
-                    })
-                });
-
-            })
-    }
-
-
-    // Fonction pour ajouter une photo :
+    // Fonction pour ajouter une photo en cherchant dans notre dossier
     btnAddPicture.addEventListener('click', function chooseFileToUpload() {
-
+        if(fileInput){
+            fileInput.remove();
+        }
         fileInput = document.createElement('input');
+        fileInput.id = 'inputFileAdd';
         fileInput.type = 'file';
         fileInput.accept = 'image/jpeg, image/png';
 
         fileInput.addEventListener('change', function () {
-            selectedImg = this.files[0];
+            selectedImg = this.files[0]; // On récupère le fichier image sélectionné
             if (selectedImg) {
 
                 console.log(selectedImg);
-                const reader = new FileReader();
+                const reader = new FileReader(); // Permet de lire le contenu de l'image
 
                 reader.onload = function (event) {
                     console.log(event.target);
-
+                    
+                    // Une fois le contenu lu : 
                     blocToChoosePic.style.display = "none";
                     imgToShow.style.display = "flex";
-                    let previewImg = document.createElement('img');
-                    previewImg.src = event.target.result,
-                        previewImg.alt = selectedImg.name;
+                    previewImg = document.createElement('img');
+                    previewImg.src = event.target.result;                        previewImg.alt = selectedImg.name;
                     previewImg.style.maxHeight = "180px";
                     imgToShow.appendChild(previewImg);
-
                 }
-                reader.readAsDataURL(selectedImg);
+                reader.readAsDataURL(selectedImg); // Permet d'afficher l'image dans ma page web (lu sous forme d'URL Data)
             }
         });
 
-        fileInput.click();
+        fileInput.click(); // Ouvre le dossier pour choisir dedans. Le click se déclenche automatiquement. 
 
     });
 
@@ -198,9 +189,9 @@ window.addEventListener('load', function () {
         }
     }
 
-    btnSecondModale.addEventListener('click', function (e) {
-        // body
-        e.preventDefault();
+    // Fonction pour ajouter un projet dans la galerie
+    btnSecondModale.addEventListener('click', function () {
+
         let title = document.getElementById('title').value;
         let category = document.getElementById('category').value;
         console.log(selectedImg);
@@ -210,23 +201,55 @@ window.addEventListener('load', function () {
         formPicData.append('title', title);
         formPicData.append('category', category);
 
+        titrePhotoToAdd.value = "";
+        CategoryToAdd.value = "";
+        blocToChoosePic.style.display = "flex";
+        imgToShow.style.display = "none";
+        if(fileInput){
+            fileInput.remove();
+        }
+
         fetch('http://localhost:5678/api/works', {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        },
-        body: formPicData
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-    })
-    .catch(error => {
-        console.error('Erreur:', error);
-    });
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            body: formPicData
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                initGallery();
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+            });
     });
 
-    
+    // Permet de supprimer visuellement le fichier nouvellement supprimer, sans refresh
+    async function updateGallery() {
+        await fetch('http://localhost:5678/api/works')
+            .then(response => response.json())
+            .then(data => {
+                allGalerie.innerText = "";
+                data.forEach(element => {
+                    let modaleProjet = document.createElement('figure');
+                    modaleProjet.innerHTML =
+                        `<div class="gallery_img">
+                            <img src=${element.imageUrl} alt=${element.title} class="image">
+                            <i class="fa-solid fa-trash-can" data-id=${element.id}></i>
+                        </div>`
+                    allGalerie.appendChild(modaleProjet);
+                    let btnDelete = modaleProjet.querySelector(".fa-trash-can");
+                    let idToDelete = btnDelete.getAttribute("data-id");
+                    btnDelete.addEventListener('click', function () {
+                        deletePicture(idToDelete);
+                    })
+                });
+
+            })
+    }
+
     // Pour se déconnecter
     logOut.addEventListener('click', () => {
         localStorage.removeItem('token');
