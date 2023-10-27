@@ -87,6 +87,7 @@ window.addEventListener('load', function () {
     });
 
     closeSecModale.forEach(trigger => {
+
         trigger.addEventListener('click', closeModale2)
         titrePhotoToAdd.value = "";
         CategoryToAdd.value = "";
@@ -97,7 +98,6 @@ window.addEventListener('load', function () {
         }
     }
     );
-
     function closeModale2() {
         secondModale.classList.toggle("active");
         updateAttributeHidden();
@@ -146,6 +146,7 @@ window.addEventListener('load', function () {
 
     // Fonction pour ajouter une photo en cherchant dans notre dossier
     btnAddPicture.addEventListener('click', function chooseFileToUpload() {
+        console.log("Hello" , fileInput);
         if(fileInput){
             fileInput.remove();
         }
@@ -155,6 +156,7 @@ window.addEventListener('load', function () {
         fileInput.accept = 'image/jpeg, image/png';
 
         fileInput.addEventListener('change', function () {
+            console.log(this.files[0]);
             selectedImg = this.files[0]; // On récupère le fichier image sélectionné
             if (selectedImg) {
 
@@ -168,7 +170,8 @@ window.addEventListener('load', function () {
                     blocToChoosePic.style.display = "none";
                     imgToShow.style.display = "flex";
                     previewImg = document.createElement('img');
-                    previewImg.src = event.target.result;                        previewImg.alt = selectedImg.name;
+                    previewImg.src = event.target.result;                        
+                    previewImg.alt = selectedImg.name;
                     previewImg.style.maxHeight = "180px";
                     imgToShow.appendChild(previewImg);
                 }
@@ -192,15 +195,6 @@ window.addEventListener('load', function () {
     // Fonction pour ajouter un projet dans la galerie
     btnSecondModale.addEventListener('click', function () {
 
-        let title = document.getElementById('title').value;
-        let category = document.getElementById('category').value;
-        console.log(selectedImg);
-
-        let formPicData = new FormData();
-        formPicData.append('image', selectedImg);
-        formPicData.append('title', title);
-        formPicData.append('category', category);
-
         titrePhotoToAdd.value = "";
         CategoryToAdd.value = "";
         blocToChoosePic.style.display = "flex";
@@ -208,6 +202,22 @@ window.addEventListener('load', function () {
         if(fileInput){
             fileInput.remove();
         }
+        console.log("fileInput here :" , fileInput);
+
+
+        let title = document.getElementById('title').value;
+        let category = document.getElementById('category').value;
+        console.log(selectedImg);
+
+        let formPicData = new FormData();
+        console.log("formPic" , formPicData);
+        if (formPicData.firstChild) {
+            formPicData.replaceChildren();
+        }
+        formPicData.append('image', selectedImg);
+        formPicData.append('title', title);
+        formPicData.append('category', category);
+
 
         fetch('http://localhost:5678/api/works', {
             method: 'POST',
