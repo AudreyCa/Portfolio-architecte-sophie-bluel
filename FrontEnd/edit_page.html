@@ -50,14 +50,16 @@
 				<form id="formPhoto">
 					<div class="bloc_details_photo">
 						<label for="title">Titre</label>
-						<input type="text" name="title" id="title"  class="title_pic_Add">
-						<!-- ajouter required quand from sera actif -->
+						<input type="text" name="title" id="title" class="title_pic_Add">
 						<label for="category">Catégorie</label>
-						<input type="text" name="category" id="category"  class="category_pic_Add" >
-						<!-- ajouter required quand from sera actif -->
+						<select id="category" name="category" class="category_pic_Add">
+							<option value="1">Objects</option>
+							<option value="2">Appartements</option>
+							<option value="3">Hôtels & restaurants</option>
+						</select>
 					</div>
 					<div class="submit_photo">
-						<input type="submit" id="add_picture2" class="modal-trigger-close" value="Valider" disabled>
+						<input type="submit" id="add_picture2" class="modal-trigger-close" value="Valider">
 					</div>
 				</form>
 			</div>

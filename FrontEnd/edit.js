@@ -16,8 +16,9 @@ window.addEventListener('load', function () {
     let blocToChoosePic = document.querySelector(".disaperedForPicture");
     let imgToShow = document.querySelector(".img_preview");
     let titrePhotoToAdd = document.querySelector(".title_pic_Add");
-    let CategoryToAdd = document.querySelector(".category_pic_Add");
+    let categoryToAdd = document.querySelector(".category_pic_Add");
     let fileInput = document.getElementById("inputFileAdd");
+    let formAddPicture = document.getElementById("formPhoto");
     let selectedImg, previewImg;
 
 
@@ -71,31 +72,25 @@ window.addEventListener('load', function () {
             })
     });
 
-    // Gestion des modales
-    closeFirstModale.forEach(trigger =>
+    // ------- Gestion des modales ---------- 
+    closeFirstModale.forEach(trigger => 
         trigger.addEventListener('click', closeModale1)
     );
-    function closeModale1(e) {
+    function closeModale1() {
         modalContainer.classList.toggle("active");
         updateAttributeHidden();
+        initGallery();
     }
 
     btnFirstModale.addEventListener('click', function () {
         modalContainer.classList.toggle("active");
         secondModale.classList.toggle("active");
         updateAttributeHidden();
+        emptyFormProjet();
     });
 
     closeSecModale.forEach(trigger => {
-
-        trigger.addEventListener('click', closeModale2)
-        titrePhotoToAdd.value = "";
-        CategoryToAdd.value = "";
-        blocToChoosePic.style.display = "flex";
-        imgToShow.style.display = "none";
-        if(fileInput){
-            fileInput.remove();
-        }
+        trigger.addEventListener('click', closeModale2);
     }
     );
     function closeModale2() {
@@ -115,10 +110,16 @@ window.addEventListener('load', function () {
         secondModale.setAttribute('aria-hidden', isModalActive);
     }
 
+    function emptyFormProjet () {
+        blocToChoosePic.style.display = "flex";
+        imgToShow.style.display = "none";
+        titrePhotoToAdd.value = "";
+        categoryToAdd.value = "none";
+        btnSecondModale.style.backgroundColor = "grey";
+    }
+
     // Fonction qui permet de supprimer les photos que l'on choisi (en fonction de leur id)
     function deletePicture(id) {
-        // console.log(id);
-        // e.preventDefault();
         try {
 
             fetch(`http://localhost:5678/api/works/${id}`, {
@@ -135,8 +136,7 @@ window.addEventListener('load', function () {
                 })
                 .then(data => {
                     console.log(data);
-                    console.log(`Image avec l'ID ${id} supprimée avec succès.`);
-                    //ici
+                    // console.log(`Image avec l'ID ${id} supprimée avec succès.`);
                     updateGallery();
                 })
         } catch (error) {
@@ -146,9 +146,8 @@ window.addEventListener('load', function () {
 
     // Fonction pour ajouter une photo en cherchant dans notre dossier
     btnAddPicture.addEventListener('click', function chooseFileToUpload() {
-        console.log("Hello" , fileInput);
-        if(fileInput){
-            fileInput.remove();
+        if(previewImg){
+            imgToShow.replaceChildren();
         }
         fileInput = document.createElement('input');
         fileInput.id = 'inputFileAdd';
@@ -156,16 +155,13 @@ window.addEventListener('load', function () {
         fileInput.accept = 'image/jpeg, image/png';
 
         fileInput.addEventListener('change', function () {
-            console.log(this.files[0]);
+            // console.log(this.files[0]);
             selectedImg = this.files[0]; // On récupère le fichier image sélectionné
             if (selectedImg) {
-
-                console.log(selectedImg);
                 const reader = new FileReader(); // Permet de lire le contenu de l'image
 
                 reader.onload = function (event) {
-                    console.log(event.target);
-                    
+                    // console.log(event.target);
                     // Une fois le contenu lu : 
                     blocToChoosePic.style.display = "none";
                     imgToShow.style.display = "flex";
@@ -183,60 +179,54 @@ window.addEventListener('load', function () {
 
     });
 
+    //------- Seconde modale : si les champs sont remplis, le bouton se colore ----------
     titrePhotoToAdd.addEventListener('input', updateInputColor);
-    CategoryToAdd.addEventListener('input', updateInputColor);
+    categoryToAdd.addEventListener('input', updateInputColor);
     function updateInputColor() {
-        if (titrePhotoToAdd.value !== "" && CategoryToAdd.value !== "") {
+        if (titrePhotoToAdd.value !== "" && categoryToAdd.value !== "") {
             btnSecondModale.style.backgroundColor = "#1D6154";
-            btnSecondModale.removeAttribute("disabled");
         }
     }
 
-    // Fonction pour ajouter un projet dans la galerie
-    btnSecondModale.addEventListener('click', function () {
+    // Fonction pour ajouter un projet dans la galerie / envoyer les data du formulaire au backend
+    formAddPicture.addEventListener('submit', function (e) {
 
-        titrePhotoToAdd.value = "";
-        CategoryToAdd.value = "";
-        blocToChoosePic.style.display = "flex";
-        imgToShow.style.display = "none";
-        if(fileInput){
-            fileInput.remove();
+        e.preventDefault();
+
+        if(!previewImg || !titrePhotoToAdd.value || !categoryToAdd.value) {
+            alert("Vueillez remplir tous les champs");
+        } else {
+            let title = document.getElementById('title').value;
+            let category = document.getElementById('category').value;
+    
+            let formPicData = new FormData();
+            // on ajoute les champs selectionnées au formulaire : 
+            formPicData.append('image', selectedImg); 
+            formPicData.append('title', title);
+            formPicData.append('category', category);
+    
+            // On envoie le formulaire au backend pour ajouter le projet
+            fetch('http://localhost:5678/api/works', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formPicData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // console.log(data);
+                    initGallery();
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                });
+            
+            emptyFormProjet();
         }
-        console.log("fileInput here :" , fileInput);
-
-
-        let title = document.getElementById('title').value;
-        let category = document.getElementById('category').value;
-        console.log(selectedImg);
-
-        let formPicData = new FormData();
-        console.log("formPic" , formPicData);
-        if (formPicData.firstChild) {
-            formPicData.replaceChildren();
-        }
-        formPicData.append('image', selectedImg);
-        formPicData.append('title', title);
-        formPicData.append('category', category);
-
-
-        fetch('http://localhost:5678/api/works', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-            body: formPicData
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                initGallery();
-            })
-            .catch(error => {
-                console.error('Erreur:', error);
-            });
     });
 
-    // Permet de supprimer visuellement le fichier nouvellement supprimer, sans refresh
+    // Permet de supprimer visuellement le fichier nouvellement supprimer, sans refresh, dans la modale
     async function updateGallery() {
         await fetch('http://localhost:5678/api/works')
             .then(response => response.json())
@@ -267,5 +257,3 @@ window.addEventListener('load', function () {
     });
 
 });
-
-
