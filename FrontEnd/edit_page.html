@@ -21,48 +21,50 @@
 
 	<!-- Modale pour modifier/supprimer la galerie -->
 	<div id="modal-container" aria-hidden="true" role="dialog" aria-labelledby="edit_galerie_photo">
-			<div class="modal-wrapper">
-				<div class="alone_btn_close">
-					<i class="fa-solid fa-xmark modal-trigger"></i>
-				</div>
-				<h3 id="edit_galerie_photo">Galerie photo</h3>
-				<div id="all_gallery"></div>
-				<a href="#modal-container-add" id="add_picture"> Ajouter une photo</a>
+		<div class="overlay modal-trigger"></div>
+		<div class="modal-wrapper">
+			<div class="alone_btn_close">
+				<i class="fa-solid fa-xmark modal-trigger"></i>
 			</div>
+			<h3 id="edit_galerie_photo">Galerie photo</h3>
+			<div id="all_gallery"></div>
+			<a href="#modal-container-add" id="add_picture"> Ajouter une photo</a>
+		</div>
 	</div>
 
 	<!-- Modale pour ajouter une photo -->
 	<div id="modal-container-add" aria-hidden="true" role="dialog" aria-labelledby="add_galerie_photo">
-			<div class="modal-wrapper">
-				<div class="buttons_action">
-					<i class="fa-solid fa-arrow-left"></i>
-					<i class="fa-solid fa-xmark modal-trigger-close"></i>
-				</div>
-				<h3 id="add_galerie_photo">Ajout photo</h3>
-				<div class="bloc_photo">
-					<div class="disaperedForPicture">
-						<i class="fa-regular fa-image"></i>
-						<button class="add_photo">+ Ajouter photo</button>
-						<p class="conseil"> jpg, png : 4mo max</p>
-					</div>
-					<div class="img_preview"></div>
-				</div>
-				<form id="formPhoto">
-					<div class="bloc_details_photo">
-						<label for="title">Titre</label>
-						<input type="text" name="title" id="title" class="title_pic_Add">
-						<label for="category">Catégorie</label>
-						<select id="category" name="category" class="category_pic_Add">
-							<option value="1">Objects</option>
-							<option value="2">Appartements</option>
-							<option value="3">Hôtels & restaurants</option>
-						</select>
-					</div>
-					<div class="submit_photo">
-						<input type="submit" id="add_picture2" class="modal-trigger-close" value="Valider">
-					</div>
-				</form>
+		<div class="overlay modal-trigger-close"></div>
+		<div class="modal-wrapper">
+			<div class="buttons_action">
+				<i class="fa-solid fa-arrow-left"></i>
+				<i class="fa-solid fa-xmark modal-trigger-close"></i>
 			</div>
+			<h3 id="add_galerie_photo">Ajout photo</h3>
+			<div class="bloc_photo">
+				<div class="disaperedForPicture">
+					<i class="fa-regular fa-image"></i>
+					<button class="add_photo">+ Ajouter photo</button>
+					<p class="conseil"> jpg, png : 4mo max</p>
+				</div>
+				<div class="img_preview"></div>
+			</div>
+			<form id="formPhoto">
+				<div class="bloc_details_photo">
+					<label for="title">Titre</label>
+					<input type="text" name="title" id="title" class="title_pic_Add">
+					<label for="category">Catégorie</label>
+					<select id="category" name="category" class="category_pic_Add">
+						<option value="1">Objects</option>
+						<option value="2">Appartements</option>
+						<option value="3">Hôtels & restaurants</option>
+					</select>
+				</div>
+				<div class="submit_photo">
+					<input type="submit" id="add_picture2" class="modal-trigger-close"value="Valider">
+				</div>
+			</form>
+		</div>
 	</div>
 
 	<div class="edit_mode">

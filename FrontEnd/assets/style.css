@@ -229,6 +229,13 @@ li:hover, a:hover  {
 	visibility: visible;
 }
 
+.overlay{
+	width: 100vw;
+	height: 100vh;
+	position: relative;
+	z-index: 1;
+}
+
 .modal-wrapper{
 	opacity: 0;
 	overflow: auto;
@@ -242,6 +249,8 @@ li:hover, a:hover  {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	position: absolute;
+	z-index: 2;
 }
 
 #modal-container.active .modal-wrapper, #modal-container-add.active .modal-wrapper{
