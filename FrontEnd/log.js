@@ -29,7 +29,7 @@ formLog.addEventListener('submit', async function(e) {
             }
 
         } else {
-            document.getElementById('error').innerHTML = '<p class="error_message">L\'email et/ou le mot de passe sont incorrects</p>';
+            document.getElementById('error').innerHTML = `<p class="error_message">L'email et/ou le mot de passe sont incorrects</p>`;
         }
     } catch(error) {
         alert('Erreur du serveur');

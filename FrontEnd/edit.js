@@ -38,7 +38,7 @@ window.addEventListener('load', function () {
             .then(data => {
                 galerie.innerText = "";
                 data.forEach(element => {
-                    // console.log(element);
+                    console.log(element);
                     let projet = document.createElement('figure');
                     projet.innerHTML = `<img src=${element.imageUrl} alt=${element.title}>
                 <figcaption>${element.title}</figcaption>`;
@@ -194,7 +194,8 @@ window.addEventListener('load', function () {
         e.preventDefault();
 
         if(!previewImg || !titrePhotoToAdd.value || !categoryToAdd.value) {
-            alert("Vueillez remplir tous les champs");
+            e.preventDefault();
+            document.getElementById('error').innerHTML = '<p class="error_message">Veuillez remplir tous les champs</p>';
         } else {
             let title = document.getElementById('title').value;
             let category = document.getElementById('category').value;
@@ -223,6 +224,7 @@ window.addEventListener('load', function () {
                 });
             
             emptyFormProjet();
+            closeModale2();
         }
     });
 
