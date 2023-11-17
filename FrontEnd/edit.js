@@ -38,7 +38,7 @@ window.addEventListener('load', function () {
             .then(data => {
                 galerie.innerText = "";
                 data.forEach(element => {
-                    console.log(element);
+                    // console.log(element);
                     let projet = document.createElement('figure');
                     projet.innerHTML = `<img src=${element.imageUrl} alt=${element.title}>
                 <figcaption>${element.title}</figcaption>`;
@@ -135,7 +135,7 @@ window.addEventListener('load', function () {
                     }
                 })
                 .then(data => {
-                    console.log(data);
+                    // console.log(data);
                     // console.log(`Image avec l'ID ${id} supprimée avec succès.`);
                     updateGallery();
                 })
@@ -149,6 +149,7 @@ window.addEventListener('load', function () {
         if(previewImg){
             imgToShow.replaceChildren();
         }
+        // On crée dynamiquement un input qui est une boite de dialogue de selection de fichier en créent cet input.
         fileInput = document.createElement('input');
         fileInput.id = 'inputFileAdd';
         fileInput.type = 'file';
