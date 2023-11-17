@@ -13,7 +13,7 @@ window.addEventListener('load',  () => {
         .then(response => response.json())
         .then(data => {
             data.forEach(element => {
-                console.log(element);
+                // console.log(element);
                 allProjects.push(element);
                 projets = document.createElement('figure');
                 projets.innerHTML = `<img src=${element.imageUrl} alt=${element.title}>

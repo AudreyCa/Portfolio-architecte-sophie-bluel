@@ -33,7 +33,7 @@ formLog.addEventListener('submit', async function(e) {
         }
     } catch(error) {
         alert('Erreur du serveur');
-        console.log("error ", error);
+        // console.log("error ", error);
     }
 
 });
